@@ -1,5 +1,14 @@
 {
-  "productos": [],
+  "productos": [
+    {
+      "id": 1,
+      "title": "inn",
+      "descripcion": "Fost2acial",
+      "precio": 100,
+      "codigo": "15",
+      "stock": 2
+    }
+  ],
   "carrito": [
     {
       "id": 1,
@@ -11,7 +20,12 @@
     },
     {
       "id": 3,
-      "products": []
+      "products": [
+        {
+          "id": "1",
+          "quantity": 1
+        }
+      ]
     },
     {
       "id": 4,
