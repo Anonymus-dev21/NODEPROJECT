@@ -2,11 +2,91 @@
   "productos": [
     {
       "id": 1,
-      "title": "inn",
-      "descripcion": "Fost2acial",
+      "title": "Gorra1",
+      "descripcion": "Unas gorras supergEnial que tiene muchas cosas muy buenas con un diseño ebcbatador que seguramente te gustara",
       "precio": 100,
       "codigo": "15",
-      "stock": 2
+      "stock": 3
+    },
+    {
+      "id": 2,
+      "title": "Gorra2",
+      "descripcion": "Unas gorras supergEnial que tiene muchas cosas muy buenas con un diseño ebcbatador que seguramente te gustara",
+      "precio": 100,
+      "codigo": "15",
+      "stock": 3
+    },
+    {
+      "id": 3,
+      "title": "Gorra3",
+      "descripcion": "Unas gorras supergEnial que tiene muchas cosas muy buenas con un diseño ebcbatador que seguramente te gustara",
+      "precio": 200,
+      "codigo": "15",
+      "stock": 3
+    },
+    {
+      "id": 4,
+      "title": "Pantalones",
+      "precio": "23124",
+      "descripcion": "asdasdasdas",
+      "stock": "2",
+      "codigo": "23"
+    },
+    {
+      "id": 5,
+      "title": "Remera",
+      "precio": "23000",
+      "descripcion": "REMERA ROJAAAAA muy genial y buenisima",
+      "stock": "23",
+      "codigo": "231"
+    },
+    {
+      "id": 6,
+      "title": "RemeraExotica",
+      "precio": "23000",
+      "descripcion": "Una remera exclusiva que no mucha gente tiene!",
+      "stock": "23",
+      "codigo": "231"
+    },
+    {
+      "id": 7,
+      "title": "TObillera",
+      "precio": "23000",
+      "descripcion": "Una tobillera genial\n",
+      "stock": "23",
+      "codigo": "231"
+    },
+    {
+      "id": 8,
+      "title": "TObillera",
+      "precio": "23000",
+      "descripcion": "asdasd",
+      "stock": "23",
+      "codigo": "231"
+    },
+    {
+      "id": 9,
+      "title": "Rodillera",
+      "precio": "23000",
+      "descripcion": "Una rodillera genial\n",
+      "stock": "23",
+      "codigo": "231"
+    },
+    {
+      "id": 10,
+      "title": "Buzo",
+      "precio": "23300",
+      "descripcion": "Un buzo abrigado para el frio",
+      "stock": "6",
+      "codigo": "12"
+    },
+    {
+      "id": 11,
+      "title": "Campera",
+      "precio": "23000",
+      "descripcion": "Una campera abrigada para el frio",
+      "stock": "23",
+      "codigo": "231"
     }
   ],
   "carrito": [
@@ -20,12 +100,7 @@
     },
     {
       "id": 3,
-      "products": [
-        {
-          "id": "1",
-          "quantity": 1
-        }
-      ]
+      "products": []
     },
     {
       "id": 4,

@@ -35,6 +35,7 @@ router.get("/:pid", async (req, res) => {
 
 
 router.post("/", async(req, res) => {
+  try {
 const body = req.body;
 if(body.id){
   res.status(400).send("No se puede agregar un id");
@@ -51,7 +52,15 @@ const newProducto = { id: newId, ...body };
 productos.push(newProducto);
 data.productos = productos;
 await saveData(data);
-res.status(201).json(newProducto);
+req.app.locals.io.emit("newProduct", data.productos);
+
+res.status(201).json(newProducto);}
+catch (error) {
+  console.error(error);
+  res.status(500).json({ error: "Error al agregar el producto" });
+}
+
+
 }); 
 
 
@@ -75,6 +84,7 @@ router.put("/:pid", async (req, res) => {
   const index = data.productos.findIndex((producto) => producto.id == pdtoid);
   data.productos[index] = {...producto, ...body};
   await saveData(data);
+  req.app.locals.io.emit("updateProduct", data.productos);
   res.status(201).json(data.productos[index]);
 })
 
@@ -88,11 +98,12 @@ router.delete("/:pid", async (req, res) => {
   }
   
   const index = data.productos.findIndex((pdto) => pdto.id === pid);
-  const productoEliminado = data.productos.splice(index, 1);
+  const [productoEliminado] = data.productos.splice(index, 1);
   data.carrito.forEach((cart) => {
     cart.products = cart.products.filter((product) => parseInt(product.id) !== pid);
   })
-  await saveData(data); 
+  await saveData(data);
+  req.app.locals.io.emit("deleteProduct", data.productos); 
   res.status(200).json( {productoEliminado: productoEliminado});
 });
 
