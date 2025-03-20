@@ -1,3 +1,8 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 h1{
     text-align: center;
     
@@ -9,12 +14,44 @@ h2{
     font-size: 40px;
     color: rgb(158, 80, 231);
 }
+.ContainerFiltros {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content:flex-start;
+    margin: 20px 0px;
+}
+.filtros{
+   display: flex;
+   flex-direction: row;
+   margin-top: 5px;
+}
+.categoria {
+    margin: 0px 10px 0px 3px;
+}
+.categoria select, .orden select {
+    outline: none;
+    
+    background-color: rgb(158, 80, 231);
+    margin:  0px 3px;
+    color: white;
+    border: none;
+    padding: 3px 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    
+}
+.categoria select:focus, .orden select:focus {
+    outline: none;
+    border: none;
+}
+
 .contenedorProductos{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     gap: 60px;
-    margin: 20px;
+    padding: 20px;
     
     
 }
@@ -55,6 +92,71 @@ h2{
     font-size: 15px;
     text-align: pretty;
     margin: 0;
+}
+
+.cartbutton{
+    display: flex;
+    justify-content: center;
+    margin: 20px 0px;
+}
+.cartbutton button{
+    
+    width: 200px;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.cartbutton button:hover {
+    background-color: #45a049;
+}
+.limit{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 20px;
+}
+
+.limit button{
+    font-size: larger;
+    width: 150px;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin: 0px 10px;
+}
+.limit button:hover {
+    background-color: #45a049;
+}
+
+.disabled{
+   opacity: 0.5;
+    cursor: not-allowed;
+}
+.paginate{
+    width: 100%;
+    display: flex;
+    justify-content:flex-end;
+    padding: 20px;
+}
+.paginate button{
+    font-size: larger;
+    width: 50px;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin: 0px 10px;
 }
 
 
@@ -109,4 +211,16 @@ button {
 }
 button:hover {
     background-color: #45a049;
+}
+.carritoProductsContainer{
+    display: flex;
+    flex-wrap: wrap;
+   justify-content: space-around;
+    gap: 10px;
+}
+.totalCompra{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0px;
 }

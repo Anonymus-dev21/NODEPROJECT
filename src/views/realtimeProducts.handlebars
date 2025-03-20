@@ -1,6 +1,59 @@
 <h1>RealTime</h1>
 <h2 class="productos"> Productos Socket: </h2>
+<div class="ContainerFiltros">
+  <span>Filtrar por: </span>
+  <div class="filtros">
+    <div class="categoria">
+      <span>Categoria: </span>
+      <select id="category" name="category">
+        <option value="Todos" class="option">Todos</option>
+        <option value="Accesorios" class="option">Accesorios</option>
+        <option value="Almacenamiento">Almacenamiento</option>
+        <option value="Audio">Audio</option>
+        <option value="Componentes PC">Componentes PC</option>
+        <option value="Consolas">Consolas</option>
+        <option value="Drones">Drones</option>
+        <option value="Fotografía">Fotografía</option>
+        <option value="Impresoras">Impresoras</option>
+        <option value="Laptops">Laptops</option>
+        <option value="Mobiliario">Mobiliario</option>
+        <option value="Monitores">Monitores</option>
+        <option value="Periféricos">Periféricos</option>
+        <option value="Realidad Virtual">Realidad Virtual</option>
+        <option value="Redes">Redes</option>
+        <option value="Smart Home">Smart Home</option>
+        <option value="Smartphones">Smartphones</option>
+        <option value="Tablets">Tablets</option>
+        <option value="Televisores">Televisores</option>
+        <option value="Wearables">Wearables</option>
+
+      </select>
+    </div>
+    <div class="orden">
+      <span>Orden: </span>
+      <select id="order" name="order">
+        <option value="Todos" class="option">Todos</option>
+        <option value="asc">Ascendente</option>
+        <option value="desc">Descendente</option>
+      </select>
+    </div>
+  </div>
+</div>
 <div class="contenedorProductos">
+
+</div>
+<div class="limit">
+
+  <div class="verMas">
+    <button id="verMas">Ver mas</button>
+  </div>
+
+  <div class="verMenos">
+    <button id="verMenos" class="disabled">Ver menos</button>
+  </div>
+</div>
+
+<div class="paginate">
 
 </div>
 <div class="contenedorForm">
@@ -21,6 +74,10 @@
     <label for="stock">Stock:</label>
     <input type="number" id="stock" name="stock" required />
 
+    <label for="category">Categoria:</label>
+    <input type="text" id="categorya" name="category" required />
+
     <button type="submit">Create Product</button>
+
   </form>
 </div>

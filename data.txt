@@ -6,7 +6,7 @@
       "descripcion": "Unas gorras supergEnial que tiene muchas cosas muy buenas con un diseño ebcbatador que seguramente te gustara",
       "precio": 100,
       "codigo": "15",
-      "stock": 3
+      "stock": 2
     },
     {
       "id": 2,
@@ -100,7 +100,12 @@
     },
     {
       "id": 3,
-      "products": []
+      "products": [
+        {
+          "id": "1",
+          "quantity": 1
+        }
+      ]
     },
     {
       "id": 4,

@@ -1,60 +1,85 @@
-import {json, Router} from "express";
-import fs from "fs"; 
-import { loadData, saveData  } from "../data.js";
+import {Router} from "express";
 
+
+import  { isValidObjectId } from "mongoose";
+import Producto from "../Models/modelProducts.js";
+import Carrito from "../Models/modelCart.js";
 const router = Router();
 
 
-
 router.get("/", async (req, res) => {
-  const data = await loadData()
-  if(data.productos.length > 0){
-
-    const {limit} = req.query;
-    if(limit){
-      res.send(data.productos.slice(0, limit))
-      return
-    }
-      res.send(data.productos)
-    } else{
-      res.status(404).json({error: "No hay productos cargados"});
-    }
-  })
+  try {
+    const { limit, page, sort, query } = req.query;
+    let filter = {};
+    if(query){
+      if(query === "Todos" || query === "" || query === undefined){
+        filter = {};
+      } else {
+        filter = { categoria: query };
+      }
+    } 
+    const options = {
+      limit: limit ? parseInt(limit) : 10,
+      page: page ? parseInt(page) : 1,
+      sort: sort === "asc" ? { precio: 1 } : sort === "desc" ? { precio: -1 } : undefined,
+    };
+    const result = await Producto.paginate(filter, options);
+    res.status(200).json(result);
+    } catch (error) {
+    console.error("Error al cargar productos:", error);
+    res.status(500).json({ error: "Error al cargar productos" });
+  }
+});
 
 
 router.get("/:pid", async (req, res) => {
-  const pdtoid = parseInt(req.params.pid);
-  const data = await loadData();
-  const producto = data.productos.find((producto) => producto.id == pdtoid);
+  const pdtoid = req.params.pid;
+  const producto = await Producto.findById(pdtoid);
   if(producto){
-  res.send(producto);}
+  res.send(producto)
+  return
+  }
   else{
     res.status(404).json({error: "Producto no encontrado"});
+    return
   }
 })
 
 
-router.post("/", async(req, res) => {
+router.post("/", async (req, res) => {
   try {
 const body = req.body;
 if(body.id){
   res.status(400).send("No se puede agregar un id");
   return;
 }
-if(!body.title || !body.descripcion || !body.precio || !body.codigo || !body.stock){
+if(!body.title || !body.descripcion || !body.precio || !body.codigo || !body.stock || !body.categoria){
   res.status(400).send("Faltan datos");
   return;
 }
-const data = await loadData();
-const productos = data.productos;
-const newId = productos.length > 0 ? productos[productos.length - 1].id + 1 : 1;
-const newProducto = { id: newId, ...body };
-productos.push(newProducto);
-data.productos = productos;
-await saveData(data);
-req.app.locals.io.emit("newProduct", data.productos);
 
-res.status(201).json(newProducto);}
+const productExist = await Producto.findOne( { $or: [{ title: body.title }, { codigo: body.codigo }] } );
+
+if(productExist){
+  res.status(400).send("Ya hay un producto con el mismo título o codigo");
+  return;
+}
+
+const newProducto =  new Producto({
+  title: body.title,
+  descripcion: body.descripcion,
+  precio: body.precio,
+  codigo: body.codigo,
+  stock: body.stock,
+  categoria: body.categoria
+})
+
+await newProducto.save();
+
+req.app.locals.io.emit("newProduct", Producto);
+
+res.status(201).json({message: "Producto agregado: ", newProducto});
+}
 catch (error) {
   console.error(error);
   res.status(500).json({ error: "Error al agregar el producto" });
@@ -65,15 +90,23 @@ catch (error) {
 
 
 router.put("/:pid", async (req, res) => {
-  const pdtoid = parseInt(req.params.pid);
+  const pdtoid = req.params.pid;
   const body = req.body;
-  const data = await loadData();
+  if(!pdtoid){
+    res.status(400).json({error: "Falta el id del producto"});
+    return
+  }
+  if( !isValidObjectId(pdtoid)){
+    res.status(400).json({error: "El id del producto no es valido"});
+    return    
+  }
+  const producto = Producto.findById(pdtoid);
 
  if (Object.keys(body).length === 0) {
   res.status(400).send("Añade algun campo a modificar")
   return;
 };
-  const producto = data.productos.find((producto) => producto.id === pdtoid);
+
   if(!producto){
     res.status(404).json({error: "Producto no encontrado"});
     return;
@@ -81,29 +114,34 @@ router.put("/:pid", async (req, res) => {
   if(body.id){
     res.status(400).json({error: "No se puede modificar el id del producto"});
     return;}
-  const index = data.productos.findIndex((producto) => producto.id == pdtoid);
-  data.productos[index] = {...producto, ...body};
-  await saveData(data);
-  req.app.locals.io.emit("updateProduct", data.productos);
-  res.status(201).json(data.productos[index]);
+  const productoActualizado = await Producto.findByIdAndUpdate(pdtoid, body, {new: true});
+  req.app.locals.io.emit("updateProduct", );
+  res.status(201).json({message: "Producto actualizado: ", productoActualizado});
 })
 
 router.delete("/:pid", async (req, res) => {
-  const pid = parseInt(req.params.pid);
-  const data = await loadData();
-  const producto = data.productos.find((pdto) => pdto.id === pid);
+  const pid = req.params.pid
+  if(!pid){
+    res.status(400).json({error: "Falta el id del producto"});
+    return
+  }
+  if( !isValidObjectId(pid)){
+    res.status(400).json({error: "El id del producto no es valido"});
+    return    
+  }
+  const producto = await Producto.findById(pid);
   if(!producto){
-    res.status(404).json({error: "Producto no encontrado"});
+    res.status(404).json({error: "No existe un producto con ese id"});
     return;
   }
+  const productoEliminado =  await Producto.deleteOne({ _id: pid });
   
-  const index = data.productos.findIndex((pdto) => pdto.id === pid);
-  const [productoEliminado] = data.productos.splice(index, 1);
-  data.carrito.forEach((cart) => {
-    cart.products = cart.products.filter((product) => parseInt(product.id) !== pid);
-  })
-  await saveData(data);
-  req.app.locals.io.emit("deleteProduct", data.productos); 
+ await Carrito.updateMany ({}, {
+  $pull: {
+    products: {  product: pid }
+  }
+});
+  req.app.locals.io.emit("deleteProduct", Producto); 
   res.status(200).json( {productoEliminado: productoEliminado});
 });
 
